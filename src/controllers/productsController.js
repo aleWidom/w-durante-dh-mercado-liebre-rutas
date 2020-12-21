@@ -4,47 +4,48 @@ const path = require('path');
 const productsFilePath = path.join(__dirname, '../data/productsDataBase.json');
 const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf-8'));
 
-console.log(products);
+
 
 const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 const controller = {
 	// Root - Show all products
 	index: (req, res) => {
-		res.render("products",{products});
+		res.render("products", {
+			products
+		});
 	},
 
-	
-		
+
+
 
 
 	// Detail - Detail from one product
 	detail: (req, res) => {
 
-		let productsDetail = products.find(function(product) {
+		let productsDetail = products.find(function (product) {
 
 			return product.id == req.params.id;
-		});
-		
-	
-		let precioDelProductoFinal = products.map(function(product) {		
-
-			return product.price - ((product.price * product.discount)/100);
-
-			    
-
+			
 		});
 
+		console.log(productsDetail);
 
+		let precioDelProductoFinal = productsDetail.price-((productsDetail.price*productsDetail.discount)/100);
 
-		res.render("detail", {productsDetail , precioDelProductoFinal} )
+		console.log(precioDelProductoFinal)
+
+		res.render("detail", {
+			productsDetail,
+			precioDelProductoFinal
+		})
 	},
 
 	// Create - Form to create
 	create: (req, res) => {
 		// Do the magic
 	},
-	
+
 	// Create -  Method to store
 	store: (req, res) => {
 		// Do the magic
@@ -60,7 +61,7 @@ const controller = {
 	},
 
 	// Delete - Delete one product from DB
-	destroy : (req, res) => {
+	destroy: (req, res) => {
 		// Do the magic
 	}
 };
