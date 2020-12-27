@@ -22,15 +22,27 @@ const controller = {
 			}
 		});
 
-		res.render("index", {data})
+		res.render("index", {
+			data
+		})
 	},
 
 
 	search: (req, res) => {
 
-		let busqueda = req.query.keywords;
 
-	res.render("results", {busqueda});
+		let productSearch = products.filter(function (product) {
+			productMayuscula = product.name.toUpperCase()
+			let loQueSeBusco = req.query.keywords.toUpperCase()
+			return productMayuscula.includes(loQueSeBusco)
+		})
+
+
+
+
+		res.render("results", {
+			productSearch
+		});
 	},
 };
 
