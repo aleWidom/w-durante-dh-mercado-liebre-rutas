@@ -26,9 +26,13 @@
 							<img src="/images/products/<%=producto.image%>" alt="imagen de producto">
 						</figure>
 						<article class="product-box_data">
-							<h2><%=producto.price%></h2>
-							<span><%=producto.discount%>DISCOUNT% OFF</span>
-							<p><%=producto.description%></p>
+							<% if (producto.discount > 0) { %>
+								<h2>$<%= producto.price%></h2>
+								<span><%=producto.discount%>% OFF</span>
+								<p><%= producto.description%></p>
+							<% } else { %> 
+								<h2><%= producto.price%></h2>
+								<% } %> 
 							<i class="fas fa-truck"></i>
 						</article>
 					</a>

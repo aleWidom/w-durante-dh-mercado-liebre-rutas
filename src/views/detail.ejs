@@ -24,12 +24,18 @@
             <article class="product-detail-info">
               <h2 class="product-detail-title"><%=productsDetail.name%></h2>
 
+             <% if (productsDetail.discount > 0) { %>
               <p class="product-detail-price small">
                 <span><%=productsDetail.price%></span>
                 /
-                <b>DISCOUNT% <%=productsDetail.discount%> OFF</b>
+                <b><%=productsDetail.discount%>% OFF</b>
               </p>
-              <p class="product-detail-price">$<%=precioDelProductoFinal%></p>
+              <p class="product-detail-price"><%=formulaDescuento%></p>
+             <% }  else { %>
+              <p class="product-detail-price"><%=productsDetail.price%></p>
+              <% } %> 
+              
+   
 
               <ul class="actions-list">
                 <li>

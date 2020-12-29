@@ -1,22 +1,34 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const productsFilePath = path.join(__dirname, '../data/productsDataBase.json');
-let products = JSON.parse(fs.readFileSync(productsFilePath, 'utf-8'));
+const productsFilePath = path.join(__dirname, "../data/productsDataBase.json");
 
-const toThousand = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+let products = JSON.parse(fs.readFileSync(productsFilePath, "utf-8"));
+
+const toThousand = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 const controller = {
   // Root - Show all products
   index: (req, res) => {
-    products.forEach(function (product) {
-      if (product.discount == 0) {
-        return (product.discount = '');
+    let vistaProducts = [];
+
+    products.forEach(function (originalProduct) {
+      let vistaProduct = {
+        name: originalProduct.name,
+        id: originalProduct.id,
+        price: originalProduct.price,
+        image: originalProduct.image,
+      };
+
+      vistaProducts.push(vistaProduct);
+
+      if (originalProduct.discount > 0) {
+        vistaProduct.discount = originalProduct.discount + "% OFF";
       } else {
-        return (product.discount = product.discount + '% OFF');
+        vistaProduct.discount = "";
       }
     });
-    res.render('products', { products });
+    res.render("products", { products: vistaProducts });
   },
 
   // Detail - Detail from one product
@@ -25,16 +37,14 @@ const controller = {
       return product.id == req.params.id;
     });
 
-    let precioDelProductoFinal = productsDetail.price - (productsDetail.price * productsDetail.discount) / 100;
+    let formulaDescuento = productsDetail.price - (productsDetail.price * productsDetail.discount) / 100;
 
-    console.log(precioDelProductoFinal);
-
-    res.render('detail', { productsDetail, precioDelProductoFinal });
+    res.render("detail", { productsDetail, formulaDescuento });
   },
 
   // Create - Form to create
   create: (req, res) => {
-    res.render('product-create-form');
+    res.render("product-create-form");
   },
 
   // Create -  Method to store
@@ -62,7 +72,7 @@ const controller = {
       return product.id == req.params.id;
     });
 
-    res.render('product-edit-form', {
+    res.render("product-edit-form", {
       productsDetail,
     });
   },
